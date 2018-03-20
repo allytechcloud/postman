@@ -17,9 +17,6 @@ elif [[ "$choice" = "b" ]]; then
     url="https://dl.pstmn.io/download/channel/canary/linux_64"
     name=PostmanCanary
 fi
-echo $url
-echo $name
-exit
 echo "Downloading $name ..."
 echo "URL: $url"
 wget -c "$url" -O $name.tar.gz -q --show-progress
