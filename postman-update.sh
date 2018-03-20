@@ -7,17 +7,20 @@ fi
 cd /tmp || exit
 read -r -p "[s]table or [b]eta? [sS/bB] " choice
 choice=${choice,,}    # tolower
-if [[ ! "$choice" =~ ^(s|S|b|B)$ ]]; then
+if [[ ! "$choice" =~ ^(s|b)$ ]]; then
     exit
 fi
-if [[ "$choice" =~ ^(s|S)$ ]]; then
+if [[ "$choice" = "s" ]]; then
     url=https://dl.pstmn.io/download/latest/linux64
     name=Postman
-elif [[ "$choice" =~ ^(b|B)$ ]]; then
+elif [[ "$choice" = "b" ]]; then
     url="https://dl.pstmn.io/download/channel/canary/linux_64"
     name=PostmanCanary
 fi
-echo "Downloading Postman ..."
+echo $url
+echo $name
+exit
+echo "Downloading $name ..."
 echo "URL: $url"
 wget -c "$url" -O $name.tar.gz -q --show-progress
 tar -xzf $name.tar.gz
@@ -35,8 +38,8 @@ if [ -L "/usr/bin/$name" ];then
     sudo rm -f /usr/bin/$name
 fi
 sudo ln -s /opt/$name/$name /usr/bin/$name
-if [ -f "/usr/share/applications/postman.desktop" ];then
-    sudo rm -rf /usr/share/applications/postman.desktop
+if [ -f "/usr/share/applications/$name.desktop" ];then
+    sudo rm -rf /usr/share/applications/$name.desktop
 fi
 echo "[Desktop Entry]
 Encoding=UTF-8
