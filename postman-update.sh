@@ -40,6 +40,6 @@ Exec=$name
 Icon=/opt/$name/resources/app/assets/icon.png
 Terminal=false
 Type=Application
-Categories=Development;" | sudo tee /usr/share/applications/$name.desktop
+Categories=Development;" | sudo tee /usr/share/applications/$name.desktop 2&>1;
 echo "Installation completed successfully."
 echo "You can now run the latest version of $name! by running the command '$name'."
