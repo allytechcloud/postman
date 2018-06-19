@@ -37,7 +37,7 @@ echo "[Desktop Entry]
 Encoding=UTF-8
 Name=$name
 Exec=$name
-Icon=/opt/$name/resources/app/assets/icon.png
+Icon=/opt/$name/app/resources/app/assets/icon.png
 Terminal=false
 Type=Application
 Categories=Development;" | sudo tee /usr/share/applications/$name.desktop 2&>1;
