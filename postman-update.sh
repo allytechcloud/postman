@@ -1,4 +1,7 @@
 #!/bin/bash
+installPath=~/opt
+
+
 cd /tmp || exit
 read -r -p "[s]table or [b]eta? [sS/bB] " choice
 choice=${choice,,}    # tolower
@@ -12,34 +15,38 @@ elif [[ "$choice" = "b" ]]; then
     url="https://dl.pstmn.io/download/channel/canary/linux_64"
     name=PostmanCanary
 fi
+installDir=$installPath/$name
+symlink=~/.local/bin/$name
 echo "Downloading $name ..."
 echo "URL: $url"
 wget -c "$url" -O $name.tar.gz -q --show-progress
 tar -xzf $name.tar.gz
-echo "Changing ownership of files to root ..."
-sudo chown -R root:root $name
-
 rm $name.tar.gz
-echo "Installing to opt..."
-if [ -d "/opt/$name" ];then
-    sudo rm -rf /opt/$name
+
+echo "Installing to $installSir"
+#creates path to install dir
+if [ ! -d "$installDir" ];then
+    mkdir -p $installDir
+else    
+    rm -rf $installDir
 fi
-sudo mv $name /opt/$name
+mv $name $installPath
+
 echo "Creating symbolic link..."
-if [ -L "/usr/bin/$name" ];then
-    sudo rm -f /usr/bin/$name
+if [ -L "$symlink" ];then
+    rm -f $symlink
 fi
-sudo ln -s /opt/$name/$name /usr/bin/$name
-if [ -f "/usr/share/applications/$name.desktop" ];then
-    sudo rm -rf /usr/share/applications/$name.desktop
+ln -s $installDir/$name $symlink
+if [ -f "~/.local/share/applications/$name.desktop" ];then
+    rm -rf ~/.local/share/applications/$name.desktop
 fi
 echo "[Desktop Entry]
 Encoding=UTF-8
 Name=$name
 Exec=$name
-Icon=/opt/$name/app/resources/app/assets/icon.png
+Icon=$installDir/app/resources/app/assets/icon.png
 Terminal=false
 Type=Application
-Categories=Development;" | sudo tee /usr/share/applications/$name.desktop 2&>1;
+Categories=Development;" | tee ~/.local/share/applications/$name.desktop 2&>1;
 echo "Installation completed successfully."
 echo "You can now run the latest version of $name! by running the command '$name'."
